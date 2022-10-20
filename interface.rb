@@ -1,7 +1,8 @@
 require_relative "slot_machine"
 
 # Already played
-puts SlotMachine.new(%w[🍒 7️⃣ 🛎])
+slot_machine = SlotMachine.new(%w[🍒 7️⃣ 🛎])
+p slot_machine.score
 
 # Ready to play
 slot_machine = SlotMachine.new

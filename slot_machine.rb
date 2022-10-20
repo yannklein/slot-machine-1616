@@ -1,4 +1,5 @@
 # Let’s implement a SlotMachine class with 3 reels. Each reel has 5 different items.
+
 # SlotMachine.new             => ready to play slot machine
 # SlotMachine.new(%w[🍒 7️⃣ 🛎]) => already played slot machine
 
@@ -15,44 +16,48 @@
 # The class has one public instance method, play udpate and return random combi of reels.
 
 SYMBOLS = %w[🍒 7️⃣ 🛎 ⭐️ 🤩]
+          #  0  1  2  3 4
+          #  1  2  3  4 5   + 1
+          #  10 20 30 40 50 *10
+          #  5 15 20 20 25 *5
 
 class SlotMachine
-  def initialize(reels =[])
-    @reels = reels
+  # create initialize method with one params (array), default -> empty
+  # define instance variables, one for reels combo, one for results
+  def initialize(combo = [])
+    @combo = combo
+    @results = 0 
+  end
+
+  # define the score (instance method)
+  def score
+  # if 3 time same items
+    if @combo.uniq.size == 1
+      # return score as integer depending on the item
+      return (SYMBOLS.index(@combo.first) + 1) * 10
+    # if two of the same AND includes a joker
+    elsif @combo.uniq.size == 2 && @combo.include?('🤩')
+      # return score as integer depending on the item
+      return (SYMBOLS.index(@combo.first) + 1) * 5
+    # if different
+    else
+      return 0
+    end
   end
 
   def play
-    @reels = []
+    @combo = []
     60.times do
-      @reels = []
+      @combo = []
       3.times do
-        @reels << SYMBOLS.sample
+        @combo << SYMBOLS.sample
       end
-      print "|\t" + @reels.join("\t|\t") + "\t|\r"
+      print "|\t" + @combo.join("\t|\t") + "\t|\r"
       $stdout.flush
       sleep(0.03)
     end
     puts "-" * 49
-    print "|\t" + @reels.join("\t|\t") + "\t|\r"
+    print "|\t" + @combo.join("\t|\t") + "\t|\r"
     puts "\n" + "-" * 49
-    return @reels
-  end
-
-  def score
-    # If reels have same 3 items score is
-    if @reels.uniq.size == 1
-    # the item index plus one, multiply by 10
-      (SYMBOLS.index(@reels[0]) + 1) * 10
-    # If Two of the same + Joker
-    elsif @reels.uniq.size == 2 && @reels.include?("🤩")
-    # the item index plus one, multiply by 5
-      other_reel = @reels[0] == "🤩" ? @reels[1] : @reels[0]
-      (SYMBOLS.index(other_reel) + 1) * 5
-    # If (2 jokers + anything)
-    # 25
-    # else 0
-    else
-      0
-    end
   end
 end
