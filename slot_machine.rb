@@ -16,48 +16,28 @@
 # The class has one public instance method, play udpate and return random combi of reels.
 
 SYMBOLS = %w[🍒 7️⃣ 🛎 ⭐️ 🤩]
-          #  0  1  2  3 4
-          #  1  2  3  4 5   + 1
-          #  10 20 30 40 50 *10
-          #  5 15 20 20 25 *5
+          #  0  1  2  3 4  + 1
+          #  1  2  3  4 5  * 10
+          #  10 20 30 40 50
 
 class SlotMachine
-  # create initialize method with one params (array), default -> empty
-  # define instance variables, one for reels combo, one for results
   def initialize(combo = [])
     @combo = combo
-    @results = 0 
   end
 
-  # define the score (instance method)
   def score
-  # if 3 time same items
-    if @combo.uniq.size == 1
-      # return score as integer depending on the item
-      return (SYMBOLS.index(@combo.first) + 1) * 10
-    # if two of the same AND includes a joker
-    elsif @combo.uniq.size == 2 && @combo.include?('🤩')
-      # return score as integer depending on the item
-      return (SYMBOLS.index(@combo.first) + 1) * 5
-    # if different
+    if @combo.uniq.count == 1
+      # we have three same items
+      result = (SYMBOLS.index(@combo[0]) + 1) * 10
+    elsif @combo.uniq.count == 2
+      # find the "double item": it should not be the joker, 
+      # we check the first item, then the second and keep 
+      # the one one that is not the joker
+      double_item = @combo[0] == "🤩" ? @combo[1] : @combo[0]
+      result = (SYMBOLS.index(double_item) + 1) * 5
     else
-      return 0
+      result = 0
     end
-  end
-
-  def play
-    @combo = []
-    60.times do
-      @combo = []
-      3.times do
-        @combo << SYMBOLS.sample
-      end
-      print "|\t" + @combo.join("\t|\t") + "\t|\r"
-      $stdout.flush
-      sleep(0.03)
-    end
-    puts "-" * 49
-    print "|\t" + @combo.join("\t|\t") + "\t|\r"
-    puts "\n" + "-" * 49
+    result
   end
 end
