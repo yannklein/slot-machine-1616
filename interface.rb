@@ -7,5 +7,5 @@ p slot_machine.score # => 0
 
 # Ready to play
 slot_machine = SlotMachine.new
-slot_machine.play
-puts "Your score : #{slot_machine.score}"
+reel = slot_machine.play # => ["🍒", "7️⃣", "🛎"] or any other reel
+puts "You got: #{reel} - Your score : #{slot_machine.score}"

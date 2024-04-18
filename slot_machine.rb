@@ -1,7 +1,7 @@
 # Let’s implement a SlotMachine class with 3 reels. Each reel has 5 different items.
 
-# SlotMachine.new             => ready to play slot machine
 # SlotMachine.new(%w[🍒 7️⃣ 🛎]) => already played slot machine
+# SlotMachine.new             => ready to play slot machine
 
 # The class has one public instance method, score, following these rules:
 
@@ -21,23 +21,24 @@ SYMBOLS = %w[🍒 7️⃣ 🛎 ⭐️ 🤩]
           #  10 20 30 40 50
 
 class SlotMachine
-  def initialize(combo = [])
-    @combo = combo
+  def initialize(reels = [])
+    # define instance variable
+    @reels = reels
   end
 
   def score
-    if @combo.uniq.count == 1
-      # we have three same items
-      result = (SYMBOLS.index(@combo[0]) + 1) * 10
-    elsif @combo.uniq.count == 2
-      # find the "double item": it should not be the joker, 
-      # we check the first item, then the second and keep 
-      # the one one that is not the joker
-      double_item = @combo[0] == "🤩" ? @combo[1] : @combo[0]
-      result = (SYMBOLS.index(double_item) + 1) * 5
+    # check symbols:
+    # if three of the same, return the highest score dep on the symbol
+    # if @reels.uniq == @reels[0]
+    if @reels.uniq.size == 1
+      (SYMBOLS.index(@reels[0]) + 1 ) * 10
+    # if two of the same + joker, return the corresp score dep on the symbol
+    elsif @reels.uniq.size == 2 && @reels.include?("🤩")
+      other_reel = @reels[0] == "🤩" ? @reels[1] : @reels[0]
+      (SYMBOLS.index(other_reel) + 1 ) * 5
+    # else return zero
     else
-      result = 0
+      0
     end
-    result
   end
 end

@@ -1,24 +1,19 @@
 require_relative '../slot_machine'
 
-lose_combo = %w[🍒 7️⃣ 🛎]
+# TDD with rspec (ruby test gem)
 
-def test_scenario(combo, expected_score)
-  it "returns #{expected_score} for a combo of #{combo.join(" ")}" do
-    expected = expected_score
-    slot_machine = SlotMachine.new(combo)
+def test_scenario(reels, score)
+  it "should return #{score} for #{reels.join(" ")}" do
+    expected = score
+    slot_machine = SlotMachine.new(reels)
+    # slot_machine is an instance of SlotMachine
     actual = slot_machine.score
     expect(actual).to eq(expected)
-  end 
+  end
 end
 
 describe SlotMachine do
-  describe "#score" do
-    it "returns an integer" do
-      expected = Integer
-      slot_machine = SlotMachine.new(%w[🍒 7️⃣ 🛎])
-      actual = slot_machine.score.class
-      expect(actual).to eq(expected)
-    end
+  describe '#score' do
     test_scenario(%w[🍒 7️⃣ 🛎], 0)
     test_scenario(%w[⭐️ 🛎 7️⃣], 0)
     test_scenario(%w[🤩 🤩 🤩], 50)
@@ -34,11 +29,5 @@ describe SlotMachine do
     test_scenario(%w[🤩 🤩 🛎], 25)
     test_scenario(%w[🤩 🤩 7️⃣], 25)
     test_scenario(%w[🤩 🤩 🍒], 25)
-    # it "returns 0 for a combo of 🍒 7️⃣ 🛎" do
-    #   expected = 0
-    #   slot_machine = SlotMachine.new(%w[🍒 7️⃣ 🛎])
-    #   actual = slot_machine.score
-    #   expect(actual).to eq(expected)
-    # end
   end
 end
